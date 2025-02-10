@@ -1,9 +1,11 @@
+#Desafio Final Lighthouse
+
 Este repositório contém o projeto do desafio final do Lighthouse, com o desenvolvimento do pipeline de dados utilizando o Databricks e Terraform.
 
 A documentação está dividida em duas partes:
 
-    Guia de Uso – Explicação passo a passo sobre como configurar e executar o projeto localmente.
-    O que foi feito – Resumo das etapas implementadas no projeto.
+- Guia de Uso – Explicação passo a passo sobre como configurar e executar o projeto localmente.
+- O que foi feito – Resumo das etapas implementadas no projeto.
 
 1. Guia de Uso
 Passos Iniciais
@@ -13,7 +15,7 @@ Para executar o projeto corretamente em um ambiente local, siga as instruções 
 
 Execute os comandos a seguir para clonar este repositório e navegar até o diretório do projeto:
 
-git clone git@github.org
+git clone https://github.com/bielsantanape/gabriel_pereira_desafio_final_lh.git
 cd gabriel_pereira_desafio_final_lh
 
 1.2 Criar um Ambiente Virtual
