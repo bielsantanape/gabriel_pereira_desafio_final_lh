@@ -178,33 +178,34 @@ resources:
             python_file: ../scripts/extract_to_raw.py
             parameters:
               - --table_name=Store
+
         # task de transformação
-        - task_key: transform_to_stg
-          existing_cluster_id: 0114-120134-85ri2w59
-          depends_on:
-            - task_key: extract_CountryRegionCurrency_to_raw
-            - task_key: extract_CreditCard_to_raw
-            - task_key: extract_Currency_to_raw
-            - task_key: extract_CurrencyRate_to_raw
-            - task_key: extract_Customer_to_raw
-            - task_key: extract_PersonCreditCard_to_raw
-            - task_key: extract_SalesOrderDetail_to_raw
-            - task_key: extract_SalesOrderHeader_to_raw
-            - task_key: extract_SalesOrderHeaderSalesReason_to_raw
-            - task_key: extract_SalesPerson_to_raw
-            - task_key: extract_SalesPersonQuotaHistory_to_raw
-            - task_key: extract_SalesReason_to_raw
-            - task_key: extract_SalesTaxRate_to_raw
-            - task_key: extract_SalesTerritory_to_raw
-            - task_key: extract_SalesTerritoryHistory_to_raw
-            - task_key: extract_ShoppingCartItem_to_raw
-            - task_key: extract_SpecialOffer_to_raw
-            - task_key: extract_SpecialOfferProduct_to_raw
-            - task_key: extract_Store_to_raw
+        # - task_key: transform_to_stg
+        #   existing_cluster_id: 0114-120134-85ri2w59
+        #   depends_on:
+        #     - task_key: extract_CountryRegionCurrency_to_raw
+        #     - task_key: extract_CreditCard_to_raw
+        #     - task_key: extract_Currency_to_raw
+        #     - task_key: extract_CurrencyRate_to_raw
+        #     - task_key: extract_Customer_to_raw
+        #     - task_key: extract_PersonCreditCard_to_raw
+        #     - task_key: extract_SalesOrderDetail_to_raw
+        #     - task_key: extract_SalesOrderHeader_to_raw
+        #     - task_key: extract_SalesOrderHeaderSalesReason_to_raw
+        #     - task_key: extract_SalesPerson_to_raw
+        #     - task_key: extract_SalesPersonQuotaHistory_to_raw
+        #     - task_key: extract_SalesReason_to_raw
+        #     - task_key: extract_SalesTaxRate_to_raw
+        #     - task_key: extract_SalesTerritory_to_raw
+        #     - task_key: extract_SalesTerritoryHistory_to_raw
+        #     - task_key: extract_ShoppingCartItem_to_raw
+        #     - task_key: extract_SpecialOffer_to_raw
+        #     - task_key: extract_SpecialOfferProduct_to_raw
+        #     - task_key: extract_Store_to_raw
+        #   spark_python_task:
+        #     python_file: ../scripts/transform_to_stg.py
 
-          spark_python_task:
-            python_file: ../scripts/transform_to_stg.py
-
+    #job de transformação
     transform_job:
       name: transform_adw_raw_to_stg
       parameters:
