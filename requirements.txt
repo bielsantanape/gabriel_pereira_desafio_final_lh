@@ -1,0 +1,6 @@
+databricks-bundles==0.7.0
+py4j==0.10.9.7
+pyspark==3.5.4
+PyYAML==6.0.2
+ruamel.yaml==0.18.10
+ruamel.yaml.clib==0.2.12

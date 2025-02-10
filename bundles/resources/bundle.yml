@@ -1,0 +1,222 @@
+# The main job for bundles.
+resources:
+  jobs:
+    extract_job:
+      name: extract_adw_to_raw
+      max_concurrent_runs: 6
+      parameters:
+        - name: run_date
+          default: '{{job.start_time.[iso_date]}}'
+          
+      trigger:
+        # Run this job every day, exactly one day from the last run; see https://docs.databricks.com/api/workspace/jobs/create#trigger
+        periodic:
+          interval: 1
+          unit: DAYS
+
+      # Notificações de falhas por email para ser uma forma de monitoramento do job
+      email_notifications:
+        on_failure:
+          - gabriel.pereira@indicium.tech
+
+      # tasks de extração
+      tasks:
+        - task_key: extract_CountryRegionCurrency_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=CountryRegionCurrency
+        - task_key: extract_CreditCard_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=CreditCard
+
+        - task_key: extract_Currency_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=Currency
+
+        - task_key: extract_CurrencyRate_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=CurrencyRate
+
+        - task_key: extract_Customer_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=Customer
+
+        - task_key: extract_PersonCreditCard_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=PersonCreditCard
+
+        - task_key: extract_SalesOrderDetail_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          depends_on:
+            - task_key: extract_CountryRegionCurrency_to_raw
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=SalesOrderDetail
+
+        - task_key: extract_SalesOrderHeader_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          depends_on:
+            - task_key: extract_CreditCard_to_raw
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=SalesOrderHeader
+
+        - task_key: extract_SalesOrderHeaderSalesReason_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          depends_on:
+            - task_key: extract_Currency_to_raw
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=SalesOrderHeaderSalesReason
+
+        - task_key: extract_SalesPerson_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          depends_on:
+            - task_key: extract_CurrencyRate_to_raw
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=SalesPerson
+
+        - task_key: extract_SalesPersonQuotaHistory_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          depends_on:
+            - task_key: extract_Customer_to_raw
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=SalesPersonQuotaHistory
+
+        - task_key: extract_SalesReason_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          depends_on:
+            - task_key: extract_PersonCreditCard_to_raw
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=SalesReason
+
+        - task_key: extract_SalesTaxRate_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          depends_on:
+            - task_key: extract_SalesOrderDetail_to_raw
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=SalesTaxRate
+
+        - task_key: extract_SalesTerritory_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          depends_on:
+            - task_key: extract_SalesOrderHeader_to_raw
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=SalesTerritory
+
+        - task_key: extract_SalesTerritoryHistory_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          depends_on:
+            - task_key: extract_SalesOrderHeaderSalesReason_to_raw
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=SalesTerritoryHistory
+
+        - task_key: extract_ShoppingCartItem_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          depends_on:
+            - task_key: extract_SalesPerson_to_raw
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=ShoppingCartItem
+
+        - task_key: extract_SpecialOffer_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          depends_on:
+            - task_key: extract_SalesPersonQuotaHistory_to_raw
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=SpecialOffer
+
+        - task_key: extract_SpecialOfferProduct_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          depends_on:
+            - task_key: extract_SalesReason_to_raw
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=SpecialOfferProduct
+
+        - task_key: extract_Store_to_raw
+          existing_cluster_id: 0114-120134-85ri2w59
+          depends_on:
+            - task_key: extract_SalesTaxRate_to_raw
+          spark_python_task:
+            python_file: ../scripts/extract_to_raw.py
+            parameters:
+              - --table_name=Store
+        # task de transformação
+        - task_key: transform_to_stg
+          existing_cluster_id: 0114-120134-85ri2w59
+          depends_on:
+            - task_key: extract_CountryRegionCurrency_to_raw
+            - task_key: extract_CreditCard_to_raw
+            - task_key: extract_Currency_to_raw
+            - task_key: extract_CurrencyRate_to_raw
+            - task_key: extract_Customer_to_raw
+            - task_key: extract_PersonCreditCard_to_raw
+            - task_key: extract_SalesOrderDetail_to_raw
+            - task_key: extract_SalesOrderHeader_to_raw
+            - task_key: extract_SalesOrderHeaderSalesReason_to_raw
+            - task_key: extract_SalesPerson_to_raw
+            - task_key: extract_SalesPersonQuotaHistory_to_raw
+            - task_key: extract_SalesReason_to_raw
+            - task_key: extract_SalesTaxRate_to_raw
+            - task_key: extract_SalesTerritory_to_raw
+            - task_key: extract_SalesTerritoryHistory_to_raw
+            - task_key: extract_ShoppingCartItem_to_raw
+            - task_key: extract_SpecialOffer_to_raw
+            - task_key: extract_SpecialOfferProduct_to_raw
+            - task_key: extract_Store_to_raw
+
+          spark_python_task:
+            python_file: ../scripts/transform_to_stg.py
+
+    transform_job:
+      name: transform_adw_raw_to_stg
+      parameters:
+        - name: run_date
+          default: '{{job.start_time.[iso_date]}}'
+
+      email_notifications:
+        on_failure:
+          - gabriel.pereira@indicium.tech
+
+      tasks:
+        - task_key: transform_to_stg
+          existing_cluster_id: 0114-120134-85ri2w59
+          spark_python_task:
+            python_file: ../scripts/transform_to_stg.py

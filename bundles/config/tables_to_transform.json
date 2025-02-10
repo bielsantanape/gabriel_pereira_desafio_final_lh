@@ -1,0 +1,24 @@
+{
+    "tables": [
+      "CountryRegionCurrency",
+      "CreditCard",
+      "Currency",
+      "CurrencyRate",
+      "Customer",
+      "PersonCreditCard",
+      "SalesOrderDetail",
+      "SalesOrderHeader",
+      "SalesOrderHeaderSalesReason",
+      "SalesPerson",
+      "SalesPersonQuotaHistory",
+      "SalesReason",
+      "SalesTaxRate",
+      "SalesTerritory",
+      "SalesTerritoryHistory",
+      "ShoppingCartItem",
+      "SpecialOffer",
+      "SpecialOfferProduct",
+      "Store"
+    ]
+  }
+  
