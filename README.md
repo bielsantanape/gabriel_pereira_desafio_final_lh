@@ -174,6 +174,9 @@ As tabelas pertencentes ao departamento de sales foram extraídas através do jo
 
 Essas tasks usam o script extract_to_raw.py para extrair as tabelas do banco de dados. Esse arquivo Python configura um logger para registrar os eventos, recebe o nome da tabela como parâmetro através da biblioteca argparse, inicia sessão Spark, realiza a conexão com o banco de dados e usa uma query simples de SELECT * FROM Sales.<nome_tabela> para extrair os dados, que são carregados em um DataFrame do Spark e posteriormente salvos no schema sales dentro de gabriel_augusto_santana_pereira_raw através do overwrite, que substitui todos os dados, mantendo somente os mais atualizados, como se fosse um full refresh.
 
+*Job de extração funcionando corretamente:*
+![image](https://github.com/user-attachments/assets/0478d19d-c399-445d-9e21-41bc01810e92)
+
 
 2.3.2 Transformação
 
@@ -181,7 +184,7 @@ As transformações foram realizadas com Spark através do job transform_adw_raw
 
 Então, o script inicia sessão Spark, cria o schema stg (se não existir no Databricks), aplica transformações nos dados, incluindo padronização e renomeação de colunas, substituição de nulos, remoção de duplicatas, limpeza de espaços e adição de uma coluna transformation_date com a data atual. Após as transformações, as tabelas são salvas no catalog gabriel_augusto_santana_pereira_stg.sales, também com o overwrite.
 
-Job de transformação funcionando corretamente:
+*Job de transformação funcionando corretamente:*
 ![image](https://github.com/user-attachments/assets/c7dd2716-76bc-4856-9132-4ab7469134bd)
 
 **2.4 Dados Sensíveis**
@@ -200,5 +203,5 @@ Configuração dos Jobs de Extração e Transformação:
 Ao ler o enunciado, entendi que seria necessário criar jobs distintos: um para a extração e outro para a transformação, com o job de transformação dependendo da conclusão do de extração para iniciar. Seguindo essa lógica, criei os dois jobs, mas encontrei dificuldades para configurar o trigger pela UI, provavelmente devido à falta de permissões. Testei os jobs separadamente e ambos funcionaram, mas, para garantir que o código funcionasse corretamente (sem precisar acionar o job de transformação manualmente), coloquei uma task de transformação dentro do job de extração. 
 Essa task foi configurada para depender de todas as tasks de extração, garantindo que fosse executada por último, finalizando o pipeline de uma vez só. Fiquei um pouco confuso sobre o que manter no código: se era para ter os dois jobs, mesmo sem serem triggered, ou deixar somente a task de extração. Então, deixei ambos, mas comentei a task de transformação no job de extração, acreditando que deveria haver dois jobs distintos. No entanto, ainda é necessário configurar o trigger na UI do Databricks para que tudo funcione conforme o esperado.
 
-Gráfico que mostra a dependência das tasks citadas anteriormente:
+*Gráfico que mostra a dependência das tasks citadas anteriormente:*
 ![image](https://github.com/user-attachments/assets/204e1186-b95f-4805-ad3c-65db49094644)
