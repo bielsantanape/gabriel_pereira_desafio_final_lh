@@ -17,9 +17,8 @@ Siga as instruções abaixo para configurar e executar o projeto em um ambiente 
 
 Primeiro, clone este repositório e navegue até o diretório do projeto:
 
-```
-git clone https://github.com/bielsantanape/gabriel_pereira_desafio_final_lh.git
-cd gabriel_pereira_desafio_final_lh
+    git clone https://github.com/bielsantanape/gabriel_pereira_desafio_final_lh.git
+    cd gabriel_pereira_desafio_final_lh
 
 1.2 Criar um Ambiente Virtual
 
